@@ -23,6 +23,10 @@ Everything interesting is in `langtools/src/share/classes/com/sun/tools/javac/`.
 * `comp/Check.java` checks for shapes
 * `resources/compiler.properties` defines notes, errors, and warnings, including the ones for SHAPE ABUSE
 
+Remember
+--------
+900% of this code belongs to Java, not me. Thanks Java.
+
 Bye
 ---
 Ok Future Ben, that's all I've got for you. Enjoy

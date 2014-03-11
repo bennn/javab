@@ -1,3 +1,17 @@
+# scratch files
+*~
+*.swp
+\#*
+
+# Generated files
+langtools/dist/lib/src.zip
+langtools/build/bootstrap/bin/javac
+langtools/build/bootstrap/bin/javadoc
+langtools/build/bootstrap/bin/javah
+langtools/dist/bootstrap/bin/javac
+langtools/dist/bootstrap/bin/javadoc
+langtools/dist/bootstrap/bin/javah
+
 *.class
 
 # Package Files #
