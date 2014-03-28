@@ -44,15 +44,22 @@ public class Shapes {
 	
 	public static final String[] allShapes = {
 	    "de.nava.informa.core.WithChildrenMIF", 
-	    "edu.umd.cs.findbugs.ba.AnnotationEnumeration", 
 	    "edu.rice.cs.drjava.model.Finalizable",
+	    "edu.umd.cs.findbugs.ba.AnnotationEnumeration", 
 	    "edu.umd.cs.findbugs.graph.AbstractEdge", 
 	    "edu.umd.cs.findbugs.graph.AbstractVertex", 
+	    "edu.umd.cs.findbugs.graph.GraphEdge", 
+	    "edu.umd.cs.findbugs.graph.GraphVertex", 
 	    "net.sourceforge.pmd.dcd.graph.MemberNode", 
 	    "org.apache.hadoop.io.WritableComparable", 
 	    "org.junit.runners.model.FrameworkMember", 
+	    "org.drools.core.factmodel.traits.TraitableBean",
+	    "org.drools.core.util.AbstractBaseLinkedListNode",
+	    "org.drools.core.util.Entry",
+	    "org.drools.core.util.LinkedList",
+	    "org.drools.core.util.LinkedListNode",
 	    "java.lang.Enum", 
-	    "java.lang.Comparable"
+	    "java.lang.Comparable",
 	    };
 	
 	public static boolean isShape(com.sun.tools.javac.code.Type t) {
