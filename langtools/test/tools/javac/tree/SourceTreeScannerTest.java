@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -138,13 +138,6 @@ public class SourceTreeScannerTest extends AbstractTreeScannerTest {
                 for (Field f: getFields(tree)) {
                     if (TypeBoundKind.class.isAssignableFrom(f.getType())) {
                         // not part of public API
-                        continue;
-                    }
-                    if (JCTree.JCNewArray.class.isAssignableFrom(tree.getClass())
-                            && (f.getName().equals("annotations")
-                                || f.getName().equals("dimAnnotations"))) {
-                        // these fields are incorrectly missing from the public API
-                        // (CR 6983297)
                         continue;
                     }
                     try {

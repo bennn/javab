@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -147,7 +147,7 @@ public class CompoundScopeTest {
         Scope createScope(int nelems) {
             Scope s = new Scope(symtab.noSymbol);
             for (int i = 0 ; i < nelems ; i++) {
-                Symbol sym = new TypeSymbol(0, names.fromString("s" + i), null, null);
+                Symbol sym = new TypeVariableSymbol(0, names.fromString("s" + i), null, null);
                 s.enter(sym);
                 elems = elems.prepend(sym);
                 List<Symbol> shadowed = shadowedMap.get(sym.name);
@@ -176,7 +176,7 @@ public class CompoundScopeTest {
          */
         void checkElems(CompoundScope cs, Filter<Symbol> sf) {
             int count = 0;
-            ListBuffer<Symbol> found = ListBuffer.lb();
+            ListBuffer<Symbol> found = new ListBuffer<>();
             List<Symbol> allSymbols = sf == null ?
                     elems :
                     filter(elems, sf);
@@ -216,7 +216,7 @@ public class CompoundScopeTest {
         }
 
         List<Symbol> filter(List<Symbol> elems, Filter<Symbol> sf) {
-            ListBuffer<Symbol> res = ListBuffer.lb();
+            ListBuffer<Symbol> res = new ListBuffer<>();
             for (Symbol s : elems) {
                 if (sf.accepts(s)) {
                     res.append(s);

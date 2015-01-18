@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 /*
  * @test
- * @bug      4951228 6290760
+ * @bug      4951228 6290760 8025633 8026567
  * @summary  Test the case where the overriden method returns a different
  *           type than the method in the child class.  Make sure the
  *           documentation is inherited but the return type isn't.
@@ -49,8 +49,8 @@ public class TestMemberSummary extends JavadocTester {
         // Check return type in member summary.
         {BUG_ID + FS + "pkg" + FS + "PublicChild.html",
             "<code><a href=\"../pkg/PublicChild.html\" title=\"class in pkg\">PublicChild</a></code></td>" + NL +
-            "<td class=\"colLast\"><code><strong><a href=\"../pkg/PublicChild.html#returnTypeTest()\">" +
-            "returnTypeTest</a></strong>()</code>"
+            "<td class=\"colLast\"><code><span class=\"memberNameLink\"><a href=\"../pkg/PublicChild.html#returnTypeTest--\">" +
+            "returnTypeTest</a></span>()</code>"
         },
         // Check return type in member detail.
         {BUG_ID + FS + "pkg" + FS + "PublicChild.html",
@@ -60,9 +60,9 @@ public class TestMemberSummary extends JavadocTester {
 
          // Legacy anchor dimensions (6290760)
         {BUG_ID + FS + "pkg2" + FS + "A.html",
-            "<a name=\"f(java.lang.Object[])\">" + NL +
+            "<a name=\"f-java.lang.Object:A-\">" + NL +
             "<!--   -->" + NL +
-            "</a><a name=\"f(T[])\">" + NL +
+            "</a><a name=\"f-T:A-\">" + NL +
             "<!--   -->" + NL +
             "</a>"
         },

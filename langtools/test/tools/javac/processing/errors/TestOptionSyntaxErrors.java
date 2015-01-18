@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2011, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,15 +26,15 @@
  * @bug 6406212
  * @summary Test that annotation processor options with illegal syntax are rejected
  * @author  Joseph D. Darcy
- * @library ../../lib
- * @build JavacTestingAbstractProcessor
+ * @library /tools/javac/lib
+ * @build JavacTestingAbstractProcessor CompileFail
  * @compile TestOptionSyntaxErrors.java
- * @compile/fail -A TestOptionSyntaxErrors.java
- * @compile/fail -A8adOption TestOptionSyntaxErrors.java
- * @compile/fail -A8adOption=1worseOption TestOptionSyntaxErrors.java
- * @compile/fail -processor TestOptionSyntaxErrors -proc:only -A TestOptionSyntaxErrors.java
- * @compile/fail -processor TestOptionSyntaxErrors -proc:only -A8adOption TestOptionSyntaxErrors.java
- * @compile/fail -processor TestOptionSyntaxErrors -proc:only -A8adOption=1worseOption TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -A TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -A8adOption TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -A8adOption=1worseOption TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -processor TestOptionSyntaxErrors -proc:only -A TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -processor TestOptionSyntaxErrors -proc:only -A8adOption TestOptionSyntaxErrors.java
+ * @run main CompileFail CMDERR -processor TestOptionSyntaxErrors -proc:only -A8adOption=1worseOption TestOptionSyntaxErrors.java
  */
 
 import java.util.Set;

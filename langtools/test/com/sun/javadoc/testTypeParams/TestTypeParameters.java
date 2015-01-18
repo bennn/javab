@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 /*
  * @test
- * @bug      4927167 4974929 7010344
+ * @bug      4927167 4974929 7010344 8025633
  * @summary  When the type parameters are more than 10 characters in length,
  *           make sure there is a line break between type params and return type
  *           in member summary. Also, test for type parameter links in package-summary and
@@ -54,7 +54,7 @@ public class TestTypeParameters extends JavadocTester {
     private static final String[][] TEST1 = {
         {BUG_ID + FS + "pkg" + FS + "C.html",
             "<td class=\"colFirst\"><code>&lt;W extends java.lang.String,V extends " +
-            "java.util.List&gt;&nbsp;<br>java.lang.Object</code></td>"
+            "java.util.List&gt;<br>java.lang.Object</code></td>"
         },
         {BUG_ID + FS + "pkg" + FS + "C.html",
             "<code>&lt;T&gt;&nbsp;java.lang.Object</code>"
@@ -71,7 +71,7 @@ public class TestTypeParameters extends JavadocTester {
         },
         //Nested type parameters
         {BUG_ID + FS + "pkg" + FS + "C.html",
-            "<a name=\"formatDetails(java.util.Collection, java.util.Collection)\">" + NL +
+            "<a name=\"formatDetails-java.util.Collection-java.util.Collection-\">" + NL +
             "<!--   -->" + NL +
             "</a>"
         },

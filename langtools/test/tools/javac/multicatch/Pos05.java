@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -95,7 +95,7 @@ public class Pos05 {
                 throw new Error("Code attribute for test() method not found");
             }
             Exception_data firstExceptionTable = null;
-            for (int i = 0 ; i < ea.exception_table_langth; i++) {
+            for (int i = 0 ; i < ea.exception_table_length; i++) {
                 if (firstExceptionTable == null) {
                     firstExceptionTable = ea.exception_table[i];
                 }

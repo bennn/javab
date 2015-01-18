@@ -27,6 +27,7 @@ public final class l10n extends java.util.ListResourceBundle {
             { "jni.unknown.type", "An unknown type encountered (JNI)." },
             { "main.opt.bootclasspath", "  -bootclasspath <path>    Path from which to load bootstrap classes" },
             { "main.opt.classpath", "  -classpath <path>        Path from which to load classes" },
+            { "main.opt.cp", "  -cp <path>               Path from which to load classes" },
             { "main.opt.d", "  -d <dir>                 Output directory" },
             { "main.opt.force", "  -force                   Always write output files" },
             { "main.opt.h", "  -h  --help  -?           Print this message" },
@@ -51,7 +52,7 @@ public final class l10n extends java.util.ListResourceBundle {
             { "unknown.option", "{0} is an illegal argument\n" },
             { "unknown.type.for.field", "An unknown type encountered when generating old style headers." },
             { "unknown.type.in.method.signature", "An unknown type eccountered when generating old style stubs." },
-            { "usage", "Usage: javah [options] <classes>\n\nwhere [options] include:\n\n\t-help                 Print this help message and exit\n\t-classpath <path>     Path from which to load classes\n\t-bootclasspath <path> Path from which to load bootstrap classes\n\t-d <dir>              Output directory\n\t-o <file>             Output file (only one of -d or -o may be used)\n\t-jni                  Generate JNI-style header file (default)\n\t-version              Print version information\n\t-verbose              Enable verbose output\n\t-force                Always write output files\n\n<classes> are specified with their fully qualified names (for\ninstance, java.lang.Object).\n" },
+            { "usage", "Usage: javah [options] <classes>\n\nwhere [options] include:\n\n\t-help                 Print this help message and exit\n\t-classpath <path>     Path from which to load classes\n\t-cp <path>            Path from which to load classes\n\t-bootclasspath <path> Path from which to load bootstrap classes\n\t-d <dir>              Output directory\n\t-o <file>             Output file (only one of -d or -o may be used)\n\t-jni                  Generate JNI-style header file (default)\n\t-version              Print version information\n\t-verbose              Enable verbose output\n\t-force                Always write output files\n\n<classes> are specified with their fully qualified names (for\ninstance, java.lang.Object).\n" },
         };
     }
 }

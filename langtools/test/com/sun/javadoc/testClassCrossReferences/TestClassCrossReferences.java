@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 /*
  * @test
- * @bug 4652655 4857717
+ * @bug 4652655 4857717 8025633 8026567
  * @summary This test verifies that class cross references work properly.
  * @author jamieh
  * @library ../lib/
@@ -45,10 +45,10 @@ public class TestClassCrossReferences extends JavadocTester {
             "<a href=\"http://java.sun.com/j2se/1.4/docs/api/java/math/BigDecimal.html?is-external=true\" " +
                 "title=\"class or interface in java.math\"><code>Link to external class BigDecimal</code></a>"},
         {BUG_ID + FS + "C.html",
-            "<a href=\"http://java.sun.com/j2se/1.4/docs/api/java/math/BigInteger.html?is-external=true#gcd(java.math.BigInteger)\" " +
+            "<a href=\"http://java.sun.com/j2se/1.4/docs/api/java/math/BigInteger.html?is-external=true#gcd-java.math.BigInteger-\" " +
                 "title=\"class or interface in java.math\"><code>Link to external member gcd</code></a>"},
         {BUG_ID + FS + "C.html",
-            "<dl>" + NL + "<dt><strong>Overrides:</strong></dt>" + NL +
+            "<dl>" + NL + "<dt><span class=\"overrideSpecifyLabel\">Overrides:</span></dt>" + NL +
             "<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>" + NL +
             "</dl>"}
     };

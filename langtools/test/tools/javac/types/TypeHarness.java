@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -213,8 +213,8 @@ public class TypeHarness {
 
     /** compute a type substitution on 't' given a list of type mappings */
     public Type subst(Type t, Mapping... maps) {
-        ListBuffer<Type> from = ListBuffer.lb();
-        ListBuffer<Type> to = ListBuffer.lb();
+        ListBuffer<Type> from = new ListBuffer<>();
+        ListBuffer<Type> to = new ListBuffer<>();
         for (Mapping tm : maps) {
             from.append(tm.from);
             to.append(tm.to);
@@ -309,7 +309,7 @@ public class TypeHarness {
         }
 
         public TypeVar TypeVariable(Type bound) {
-            TypeSymbol tvsym = new TypeSymbol(0, syntheticName(), null, predef.noSymbol);
+            TypeSymbol tvsym = new TypeVariableSymbol(0, syntheticName(), null, predef.noSymbol);
             tvsym.type = new TypeVar(tvsym, bound, null);
             return (TypeVar)tvsym.type;
         }

@@ -7,7 +7,7 @@
 # A full product build (or "control" build) creates a complete JDK image.
 # To test a product build, set TESTJAVA to the path for the image.
 #
-# A langtools build just builds the langtools components of a JDK. 
+# A langtools build just builds the langtools components of a JDK.
 # To test a langtools build, set TESTJAVA to the path for a recent JDK
 # build, and set TESTBOOTCLASSPATH to the compiled langtools classes --
 # for example build/classes or dist/lib/classes.jar.
@@ -19,6 +19,7 @@
 # Get OS/ARCH specifics
 OSNAME = $(shell uname -s)
 ifeq ($(OSNAME), SunOS)
+  SLASH_JAVA = /java
   PLATFORM = solaris
   JT_PLATFORM = solaris
   ARCH = $(shell uname -p)
@@ -27,6 +28,7 @@ ifeq ($(OSNAME), SunOS)
   endif
 endif
 ifeq ($(OSNAME), Linux)
+  SLASH_JAVA = /java
   PLATFORM = linux
   JT_PLATFORM = linux
   ARCH = $(shell uname -m)
@@ -34,8 +36,25 @@ ifeq ($(OSNAME), Linux)
     ARCH=i586
   endif
 endif
+ifeq ($(OSNAME), Darwin)
+  PLATFORM = bsd
+  JT_PLATFORM = linux
+  ARCH = $(shell uname -m)
+  ifeq ($(ARCH), i386)
+    ARCH=i586
+  endif
+endif
 ifeq ($(OSNAME), Windows_NT)
+  # MKS
+  PLATFORM=windows
+endif
+ifeq ($(PLATFORM),)
   PLATFORM = windows
+  CYGPATH = | cygpath -m -s -f -
+endif
+
+ifeq ($(PLATFORM), windows)
+  SLASH_JAVA = J:
   JT_PLATFORM = win32
   ifeq ($(word 1, $(PROCESSOR_IDENTIFIER)),ia64)
     ARCH=ia64
@@ -54,7 +73,7 @@ ifeq ($(OSNAME), Windows_NT)
 endif
 
 # Root of this test area (important to use full paths in some places)
-TEST_ROOT := $(shell pwd)
+TEST_ROOT := $(shell pwd $(CYGPATH) )
 
 # Default bundle of all test results (passed or not) (JPRT only)
 ifdef JPRT_JOB_ID
@@ -72,7 +91,7 @@ endif
 ifdef JPRT_JTREG_HOME
   JTREG_HOME = $(JPRT_JTREG_HOME)
 else
-  JTREG_HOME = $(SLASH_JAVA)/re/jtreg/4.0/promoted/latest/binaries/jtreg
+  JTREG_HOME = $(SLASH_JAVA)/re/jtreg/4.1/promoted/latest/binaries/jtreg
 endif
 JTREG = $(JTREG_HOME)/$(JT_PLATFORM)/bin/jtreg
 JTDIFF = $(JTREG_HOME)/$(JT_PLATFORM)/bin/jtdiff
@@ -81,7 +100,7 @@ JTDIFF = $(JTREG_HOME)/$(JT_PLATFORM)/bin/jtdiff
 ifdef JPRT_JCK_HOME
   JCK_HOME = $(JPRT_JCK_HOME)
 else
-  JCK_HOME = $(SLASH_JAVA)/re/jck/7/promoted/latest/binaries
+  JCK_HOME = $(SLASH_JAVA)/re/jck/8/promoted/latest/binaries
 endif
 
 # Default JDK for JTREG and JCK
@@ -93,7 +112,7 @@ endif
 ifdef JPRT_JAVA_HOME
   JT_JAVA = $(JPRT_JAVA_HOME)
 else
-  JT_JAVA = $(SLASH_JAVA)/re/jdk/1.6.0/archive/fcs/binaries/$(PLATFORM)-$(ARCH)
+  JT_JAVA = $(SLASH_JAVA)/re/jdk/1.7.0/archive/fcs/binaries/$(PLATFORM)-$(ARCH)
 endif
 
 # Default JDK to test
@@ -103,10 +122,10 @@ else
   TESTJAVA = $(SLASH_JAVA)/re/jdk/1.7.0/promoted/latest/binaries/$(PLATFORM)-$(ARCH)
 endif
 
-# PRODUCT_HOME is a JPRT variable pointing to a directory containing the output from 
+# PRODUCT_HOME is a JPRT variable pointing to a directory containing the output from
 # make/Makefile
 # For langtools, this is a directory containing build and dist
-# For a control build, this is build/$(PRODUCT)-$(ARCH)/XYZ-image 
+# For a control build, this is build/$(PRODUCT)-$(ARCH)/XYZ-image
 #	(i.e, j2sdk-image or jdk-module-image)
 ifdef PRODUCT_HOME
   ifeq ($(shell [ -r $(PRODUCT_HOME)/dist/lib/classes.jar ]; echo $$?),0)
@@ -120,17 +139,22 @@ endif
 ifdef TESTBOOTCLASSPATH
   JTREG_OPTIONS += -Xbootclasspath/p:$(TESTBOOTCLASSPATH)
 ### In the following, -refvmoptions is an undocumented option
-### The following does not work JCK 7 b30 2/6/2010. Awaiting b31. 
+### The following does not work JCK 7 b30 2/6/2010. Awaiting b31.
   JCK_OPTIONS += \
 	-vmoptions:-Xbootclasspath/p:$(TESTBOOTCLASSPATH) \
 	-refvmoptions:-Xbootclasspath/p:$(TESTBOOTCLASSPATH)
 endif
 
-# Concurrency is the number of tests that can execute at once. 
-# Supported for JCK, not supported for jtreg.
+# Concurrency is the number of tests that can execute at once.
 # On an otherwise empty machine, suggest setting to (#cpus + 2)
 # If unset, the default is (#cpus)
 ### RFE: determine and use #cpus
+ifdef CONCURRENCY
+  JTREG_OPTIONS += -agentvm -concurrency:$(CONCURRENCY)
+else
+  JTREG_OPTIONS += -samevm
+endif
+
 ifdef JCK_CONCURRENCY
   JCK_OPTIONS += -concurrency:$(JCK_CONCURRENCY)
 endif
@@ -182,7 +206,7 @@ FATAL_JTDIFF_EXIT = 2
 # Exit -- used for final "normal" exit from "make". Redefine to "true" to avoid
 # having make exit with non-zero return code.
 EXIT = exit
-# Function to exit shell if exit code of preceding command is greater than or equal 
+# Function to exit shell if exit code of preceding command is greater than or equal
 # to a given level. Redefine function or preceding FATAL_*_EXIT codes as needed.
 EXIT_IF_FATAL = status=$$?; if [ $$status -ge $(1) ]; then exit $$status ; fi
 
@@ -193,9 +217,9 @@ TESTDIRS = $(DEFAULT_TESTDIRS)
 # Root of all test results
 TEST_OUTPUT_DIR = $(TEST_ROOT)/../build/$(PLATFORM)-$(ARCH)/test/langtools
 ABS_TEST_OUTPUT_DIR := \
-	$(shell mkdir -p $(TEST_ROOT)/../build/$(PLATFORM)-$(ARCH)/test/langtools; \
-		cd  $(TEST_ROOT)/../build/$(PLATFORM)-$(ARCH)/test/langtools; \
-		pwd )
+	$(shell mkdir -p $(TEST_OUTPUT_DIR); \
+		cd  $(TEST_OUTPUT_DIR); \
+		pwd $(CYGPATH))
 # Subdirectories for different test runs
 JTREG_OUTPUT_DIR = $(ABS_TEST_OUTPUT_DIR)/jtreg
 JCK_COMPILER_OUTPUT_DIR = $(ABS_TEST_OUTPUT_DIR)/jck-compiler
@@ -205,7 +229,7 @@ JCK_RUNTIME_OUTPUT_DIR = $(ABS_TEST_OUTPUT_DIR)/jck-runtime-Xcompile
 all: $(JPRT_CLEAN) jtreg-tests jck-compiler-tests jck-runtime-tests $(JPRT_ARCHIVE_BUNDLE) all-summary
 	@echo "Testing completed successfully"
 
-jtreg apt javac javadoc javah javap: $(JPRT_CLEAN) jtreg-tests $(JPRT_ARCHIVE_BUNDLE) jtreg-summary
+jtreg apt javac javadoc javah javap jdeps: $(JPRT_CLEAN) jtreg-tests $(JPRT_ARCHIVE_BUNDLE) jtreg-summary
 	@echo "Testing completed successfully"
 
 jck-compiler: $(JPRT_CLEAN) jck-compiler-tests $(JPRT_ARCHIVE_BUNDLE) jck-compiler-summary
@@ -222,6 +246,7 @@ javac: 		JTREG_TESTDIRS = tools/javac
 javadoc:	JTREG_TESTDIRS = tools/javadoc com/sun/javadoc
 javah:		JTREG_TESTDIRS = tools/javah
 javap:		JTREG_TESTDIRS = tools/javap
+jdeps:		JTREG_TESTDIRS = tools/jdeps
 
 # Run jtreg tests
 #
@@ -230,7 +255,7 @@ javap:		JTREG_TESTDIRS = tools/javap
 # JT_JAVA
 #	Version of java used to run jtreg.  Should normally be the same as TESTJAVA
 # TESTJAVA
-# 	Version of java to be tested.  
+# 	Version of java to be tested.
 # JTREG_OPTIONS
 #	Additional options for jtreg
 # JTREG_TESTDIRS
@@ -240,13 +265,15 @@ javap:		JTREG_TESTDIRS = tools/javap
 # JTREG_REFERENCE
 #	(Optional) reference results (e.g. work, report or summary.txt)
 #
+jtreg_tests: jtreg-tests
 jtreg-tests: check-jtreg FRC
 	@rm -f -r $(JTREG_OUTPUT_DIR)/JTwork $(JTREG_OUTPUT_DIR)/JTreport \
 	    $(JTREG_OUTPUT_DIR)/diff.html $(JTREG_OUTPUT_DIR)/status.txt
 	@mkdir -p $(JTREG_OUTPUT_DIR)
 	JT_JAVA=$(JT_JAVA) $(JTREG) \
 	  -J-Xmx512m \
-	  -a -samevm -ignore:quiet -v:fail,error,nopass \
+	  -vmoption:-Xmx768m \
+	  -a -ignore:quiet -v:fail,error,nopass \
           -r:$(JTREG_OUTPUT_DIR)/JTreport \
           -w:$(JTREG_OUTPUT_DIR)/JTwork \
           -jdk:$(TESTJAVA) \
@@ -272,17 +299,19 @@ jtreg-summary: FRC
 	fi
 
 # Check to make sure these directories exist
-check-jtreg: $(JT_HOME) $(PRODUCT_HOME) $(JTREG)
+check-jtreg: $(PRODUCT_HOME) $(JTREG)
 
 
 # Run JCK-compiler tests
 #
 # JCK_HOME
 #	Installed location of JCK: should include JCK-compiler, and JCK-extras
+#       Default is JCK 8.
 # JT_JAVA
 #	Version of java used to run JCK.  Should normally be the same as TESTJAVA
+#       Default is JDK 7
 # TESTJAVA
-# 	Version of java to be tested.  
+# 	Version of java to be tested.
 # JCK_COMPILER_OPTIONS
 #	Additional options for JCK-compiler
 # JCK_COMPILER_TESTDIRS
@@ -297,7 +326,7 @@ jck-compiler-tests: check-jck FRC
 	    $(JCK_COMPILER_OUTPUT_DIR)/diff.html $(JCK_COMPILER_OUTPUT_DIR)/status.txt
 	@mkdir -p $(JCK_COMPILER_OUTPUT_DIR)
 	$(JT_JAVA)/bin/java -XX:MaxPermSize=256m -Xmx512m \
-	    -jar $(JCK_HOME)/JCK-compiler-7/lib/jtjck.jar \
+	    -jar $(JCK_HOME)/JCK-compiler-8/lib/jtjck.jar \
 	    -v:non-pass \
             -r:$(JCK_COMPILER_OUTPUT_DIR)/report \
             -w:$(JCK_COMPILER_OUTPUT_DIR)/work \
@@ -331,7 +360,7 @@ jck-compiler-summary: FRC
 # JT_JAVA
 #	Version of java used to run JCK.  Should normally be the same as TESTJAVA
 # TESTJAVA
-# 	Version of java to be tested.  
+# 	Version of java to be tested.
 # JCK_RUNTIME_OPTIONS
 #	Additional options for JCK-runtime
 # JCK_RUNTIME_TESTDIRS
@@ -346,7 +375,7 @@ jck-runtime-tests: check-jck FRC
 	    $(JCK_RUNTIME_OUTPUT_DIR)/diff.html $(JCK_RUNTIME_OUTPUT_DIR)/status.txt
 	@mkdir -p $(JCK_RUNTIME_OUTPUT_DIR)
 	$(JT_JAVA)/bin/java -XX:MaxPermSize=256m -Xmx512m \
-	    -jar $(JCK_HOME)/JCK-runtime-7/lib/jtjck.jar \
+	    -jar $(JCK_HOME)/JCK-runtime-8/lib/jtjck.jar \
 	    -v:non-pass \
             -r:$(JCK_RUNTIME_OUTPUT_DIR)/report \
             -w:$(JCK_RUNTIME_OUTPUT_DIR)/work \
@@ -373,7 +402,7 @@ jck-runtime-summary: FRC
 	fi
 
 # Check to make sure these directories exist
-check-jck: $(JT_HOME) $(JCK_HOME) $(PRODUCT_HOME)
+check-jck: $(JCK_HOME) $(PRODUCT_HOME)
 
 all-summary: FRC
 	if [ -n "`find $(TEST_OUTPUT_DIR) -name status.txt`" ]; then
@@ -399,7 +428,7 @@ FRC:
 
 # Phony targets (e.g. these are not filenames)
 .PHONY: all clean \
-	jtreg javac javadoc javah javap jtreg-tests jtreg-summary check-jtreg \
+	jtreg javac javadoc javah javap jdeps jtreg-tests jtreg-summary check-jtreg \
 	jck-compiler jck-compiler-tests jck-compiler-summary \
 	jck-runtime jck-runtime-tests jck-runtime-summary check-jck
 

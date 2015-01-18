@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 /*
  * @test
- * @bug      6492694
+ * @bug      6492694 8026567
  * @summary  Test package deprecation.
  * @author   bpatel
  * @library  ../lib/
@@ -49,8 +49,9 @@ public class TestPackageDeprecation extends JavadocTester {
     //Input for string search tests.
     private static final String[][] TEST1 = {
         {BUG_ID + "-1" + FS + "pkg1" + FS + "package-summary.html",
-            "<div class=\"deprecatedContent\"><span class=\"strong\">Deprecated.</span>" + NL +
-            "<div class=\"block\"><i>This package is Deprecated.</i></div>"
+            "<div class=\"deprecatedContent\"><span class=\"deprecatedLabel\">Deprecated.</span>" + NL +
+            "<div class=\"block\"><span class=\"deprecationComment\">This package is Deprecated." +
+            "</span></div>"
         },
         {BUG_ID + "-1" + FS + "deprecated-list.html",
             "<li><a href=\"#package\">Deprecated Packages</a></li>"

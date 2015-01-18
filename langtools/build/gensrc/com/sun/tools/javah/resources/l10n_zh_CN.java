@@ -27,6 +27,7 @@ public final class l10n_zh_CN extends java.util.ListResourceBundle {
             { "jni.unknown.type", "\u9047\u5230\u672A\u77E5\u7C7B\u578B (JNI)\u3002" },
             { "main.opt.bootclasspath", "  -bootclasspath <path>    \u4ECE\u4E2D\u52A0\u8F7D\u5F15\u5BFC\u7C7B\u7684\u8DEF\u5F84" },
             { "main.opt.classpath", "  -classpath <path>        \u4ECE\u4E2D\u52A0\u8F7D\u7C7B\u7684\u8DEF\u5F84" },
+            { "main.opt.cp", "  -cp <path>               \u4ECE\u4E2D\u52A0\u8F7D\u7C7B\u7684\u8DEF\u5F84" },
             { "main.opt.d", "  -d <dir>                 \u8F93\u51FA\u76EE\u5F55" },
             { "main.opt.force", "  -force                   \u59CB\u7EC8\u5199\u5165\u8F93\u51FA\u6587\u4EF6" },
             { "main.opt.h", "  -h  --help  -?           \u8F93\u51FA\u6B64\u6D88\u606F" },
@@ -51,7 +52,7 @@ public final class l10n_zh_CN extends java.util.ListResourceBundle {
             { "unknown.option", "{0}\u662F\u975E\u6CD5\u53C2\u6570\n" },
             { "unknown.type.for.field", "\u751F\u6210\u65E7\u6837\u5F0F\u7684\u6807\u5934\u65F6\u9047\u5230\u672A\u77E5\u7684\u7C7B\u578B\u3002" },
             { "unknown.type.in.method.signature", "\u751F\u6210\u65E7\u6837\u5F0F\u7684\u5B58\u6839\u65F6\u9047\u5230\u672A\u77E5\u7684\u7C7B\u578B\u3002" },
-            { "usage", "\u7528\u6CD5: javah [options] <classes>\n\n\u5176\u4E2D, [options] \u5305\u62EC:\n\n\t-help                 \u8F93\u51FA\u6B64\u5E2E\u52A9\u6D88\u606F\u5E76\u9000\u51FA\n\t-classpath <path>     \u4ECE\u4E2D\u52A0\u8F7D\u7C7B\u7684\u8DEF\u5F84\n\t-bootclasspath <path> \u4ECE\u4E2D\u52A0\u8F7D\u5F15\u5BFC\u7C7B\u7684\u8DEF\u5F84\n\t-d <dir>              \u8F93\u51FA\u76EE\u5F55\n\t-o <file>             \u8F93\u51FA\u6587\u4EF6 (\u53EA\u80FD\u4F7F\u7528 -d \u6216 -o \u4E4B\u4E00)\n\t-jni                  \u751F\u6210 JNI \u6837\u5F0F\u7684\u6807\u5934\u6587\u4EF6 (\u9ED8\u8BA4\u503C)\n\t-version              \u8F93\u51FA\u7248\u672C\u4FE1\u606F\n\t-verbose              \u542F\u7528\u8BE6\u7EC6\u8F93\u51FA\n\t-force                \u59CB\u7EC8\u5199\u5165\u8F93\u51FA\u6587\u4EF6\n\n<classes> \u662F\u4F7F\u7528\u5176\u5168\u9650\u5B9A\u540D\u79F0\u6307\u5B9A\u7684,\n(\u4F8B\u5982 java.lang.Object)\u3002\n" },
+            { "usage", "\u7528\u6CD5: javah [options] <classes>\n\n\u5176\u4E2D, [options] \u5305\u62EC:\n\n\t-help                 \u8F93\u51FA\u6B64\u5E2E\u52A9\u6D88\u606F\u5E76\u9000\u51FA\n\t-classpath <path>     \u4ECE\u4E2D\u52A0\u8F7D\u7C7B\u7684\u8DEF\u5F84\n\t-cp <path>            \u4ECE\u4E2D\u52A0\u8F7D\u7C7B\u7684\u8DEF\u5F84\n\t-bootclasspath <path> \u4ECE\u4E2D\u52A0\u8F7D\u5F15\u5BFC\u7C7B\u7684\u8DEF\u5F84\n\t-d <dir>              \u8F93\u51FA\u76EE\u5F55\n\t-o <file>             \u8F93\u51FA\u6587\u4EF6 (\u53EA\u80FD\u4F7F\u7528 -d \u6216 -o \u4E4B\u4E00)\n\t-jni                  \u751F\u6210 JNI \u6837\u5F0F\u7684\u6807\u5934\u6587\u4EF6 (\u9ED8\u8BA4\u503C)\n\t-version              \u8F93\u51FA\u7248\u672C\u4FE1\u606F\n\t-verbose              \u542F\u7528\u8BE6\u7EC6\u8F93\u51FA\n\t-force                \u59CB\u7EC8\u5199\u5165\u8F93\u51FA\u6587\u4EF6\n\n<classes> \u662F\u4F7F\u7528\u5176\u5168\u9650\u5B9A\u540D\u79F0\u6307\u5B9A\u7684,\n(\u4F8B\u5982, java.lang.Object)\u3002\n" },
         };
     }
 }

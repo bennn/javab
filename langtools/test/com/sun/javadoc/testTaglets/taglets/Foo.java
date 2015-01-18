@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2003, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -48,9 +48,9 @@ public class Foo extends BaseTaglet {
     /**
      * {@inheritDoc}
      */
-    public TagletOutput getTagletOutput(Tag tag, TagletWriter writer) {
+    public Content getTagletOutput(Tag tag, TagletWriter writer) {
         ArrayList inlineTags = new ArrayList();
-        inlineTags.add(new TextTag(tag.holder(), "<dt><span class=\"strong\">Foo:</span></dt><dd>"));
+        inlineTags.add(new TextTag(tag.holder(), "<dt><span class=\"simpleTagLabel\">Foo:</span></dt><dd>"));
         inlineTags.addAll(Arrays.asList(tag.inlineTags()));
         inlineTags.add(new TextTag(tag.holder(), "</dd>"));
         return writer.commentTagsToOutput(tag,

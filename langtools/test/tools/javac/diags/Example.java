@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,10 +21,12 @@
  * questions.
  */
 
-import com.sun.tools.javac.file.JavacFileManager;
 import java.io.*;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import java.util.regex.*;
+import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
@@ -37,12 +39,12 @@ import javax.tools.ToolProvider;
 // import com.sun.tools.javac.Main
 // import com.sun.tools.javac.main.Main
 
+import com.sun.tools.javac.api.ClientCodeWrapper;
+import com.sun.tools.javac.file.JavacFileManager;
+import com.sun.tools.javac.main.Main;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JavacMessages;
 import com.sun.tools.javac.util.JCDiagnostic;
-import java.net.URL;
-import java.net.URLClassLoader;
-import javax.annotation.processing.Processor;
 
 /**
  * Class to handle example code designed to illustrate javac diagnostic messages.
@@ -207,6 +209,13 @@ class Example implements Comparable<Example> {
             opts.add("-classpath"); // avoid using -processorpath for now
             opts.add(classesDir.getPath());
             createAnnotationServicesFile(classesDir, procFiles);
+        } else if (options != null) {
+            int i = options.indexOf("-processor");
+            // check for built-in anno-processor(s)
+            if (i != -1 && options.get(i + 1).equals("DocCommentProcessor")) {
+                opts.add("-classpath");
+                opts.add(System.getProperty("test.classes"));
+            }
         }
 
         if (srcPathDir != null) {
@@ -287,7 +296,10 @@ class Example implements Comparable<Example> {
     private Set<String> actualKeys;
     private Set<String> declaredKeys;
 
-    static File tempDir = new File(System.getProperty("java.io.tmpdir"));
+    static File tempDir = (System.getProperty("test.src") != null) ?
+            new File(System.getProperty("user.dir")):
+            new File(System.getProperty("java.io.tmpdir"));
+
     static void setTempDir(File tempDir) {
         Example.tempDir = tempDir;
     }
@@ -397,7 +409,7 @@ class Example implements Comparable<Example> {
 
             if (keys != null) {
                 for (Diagnostic<? extends JavaFileObject> d: dc.getDiagnostics()) {
-                    scanForKeys((JCDiagnostic) d, keys);
+                    scanForKeys(unwrap(d), keys);
                 }
             }
 
@@ -417,6 +429,14 @@ class Example implements Comparable<Example> {
             }
             for (JCDiagnostic sd: d.getSubdiagnostics())
                 scanForKeys(sd, keys);
+        }
+
+        private JCDiagnostic unwrap(Diagnostic<? extends JavaFileObject> diagnostic) {
+            if (diagnostic instanceof JCDiagnostic)
+                return (JCDiagnostic) diagnostic;
+            if (diagnostic instanceof ClientCodeWrapper.DiagnosticSourceUnwrapper)
+                return ((ClientCodeWrapper.DiagnosticSourceUnwrapper)diagnostic).d;
+            throw new IllegalArgumentException();
         }
     }
 
@@ -506,14 +526,14 @@ class Example implements Comparable<Example> {
             Context c = new Context();
             JavacFileManager.preRegister(c); // can't create it until Log has been set up
             MessageTracker.preRegister(c, keys);
-            com.sun.tools.javac.main.Main m = new com.sun.tools.javac.main.Main("javac", pw);
-            int rc = m.compile(args.toArray(new String[args.size()]), c);
+            Main m = new Main("javac", pw);
+            Main.Result rc = m.compile(args.toArray(new String[args.size()]), c);
 
             if (keys != null) {
                 pw.close();
             }
 
-            return (rc == 0);
+            return rc.isOK();
         }
 
         static class MessageTracker extends JavacMessages {
