@@ -26,7 +26,7 @@
 #
 
 # mydir="`dirname $0`"
-mydir="/home/ben/ross/jdk7/langtools/dist/bootstrap/bin"
+mydir="/home/ben/code/shapes/javab/langtools/dist/bootstrap/bin"
 case `uname -s` in
     CYGWIN*)
       mydir=`cygpath -m $mydir`
@@ -73,4 +73,4 @@ done
 unset DUALCASE
 
 IFS=$nl
-"/usr/lib/jvm/java-7-openjdk/bin/java" "${bcp:+-Xbootclasspath/p:"$bcp"}" ${ea} ${javaOpts} -jar "${mylib}/javac.jar" ${toolOpts}
+"/usr/bin/java" "${bcp:+-Xbootclasspath/p:"$bcp"}" ${ea} ${javaOpts} -jar "${mylib}/javac.jar" ${toolOpts}

@@ -145,7 +145,7 @@ public class Main {
     /** Print a string that explains usage.
      */
     void help() {
-        System.out.printf("HELP MSG FOR MY JAVAC 2\n");
+        System.out.printf("At your service:\n");
         Log.printLines(out, getLocalizedString("msg.usage.header", ownName));
         for (int i=0; i<recognizedOptions.length; i++) {
             recognizedOptions[i].help(out);
