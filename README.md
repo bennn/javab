@@ -1,7 +1,9 @@
 javab
 =====
 
-Slightly modified Java 7 compiler. Tracks shape use. It's really not much.
+Slightly modified Java compiler. Tracks shape use. It's really not much.
+
+Pick the branch that matches your Java version.
 
 Building
 --------
